@@ -1,0 +1,78 @@
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Add user</title>
+
+		<style>
+			div>input{
+				position: fixed;
+				left: 90px;
+
+			}
+
+			div{
+				padding: 5px;
+			}
+		</style>
+
+	</head>
+	<body>
+		
+		<form action="/adduser/" id="form-submit" method="post" type="submit">
+			{% csrf_token %}
+			{% for field in  form%}
+				<div>
+					{{ field.label }}:	
+					{{ field }}	
+				</div>
+			{% endfor %}
+			<input type="button" value="Send" id="btn-submit">
+		</form>
+
+	{% comment %}
+		not loadstatic then static...
+	{% endcomment %}
+		{% load static %}
+		<img src='{% static 'RadarChart.png' %}'/>
+
+		<p id="info"></p>
+
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script>
+			function checkdata () {
+
+			}
+
+			$(document).ready(function() {
+
+				$('#btn-submit').click(function(event) {
+					/* Act on the event */
+					event.preventDefault();
+					rs = $('#form-submit').serialize();
+					$.ajax({
+						url: $('#form-submit').attr('action'),
+						type: $('#form-submit').attr('method'),
+						dataType: 'json',
+						data: rs,
+					})
+					.done(function(data) {
+						// if (data.ready == true) {
+						// 	$('#info').text('thank you');
+						// };
+						window.location.href = data;
+					})
+					// .fail(function(data) {
+					// 	console.log("error");
+					// })
+					// .always(function(data) {
+					// 	console.log("complete");
+					// });
+					
+				});
+
+			});
+
+		</script>
+	</body>
+	</html>
